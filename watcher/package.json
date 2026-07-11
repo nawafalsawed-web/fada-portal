@@ -1,0 +1,11 @@
+{
+  "name": "fada-leads-watcher",
+  "description": "مراقب طلبات بوابة فضاء — يرسل كل طلب جديد واتساب",
+  "main": "watch.js",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "whatsapp-web.js": "^1.26.0",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "private": true
+}
