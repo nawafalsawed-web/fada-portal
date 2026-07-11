@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>فضاء — نوردك الماء</title>
+<meta name="description" content="بوابة عملاء فضاء — عطنا لمحة سريعة عن طلبك قبل اجتماعنا">
+<link rel="icon" type="image/png" href="assets/mask_black.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FBF4DC; --cream2:#FFF7E3; --ink:#141310; --yellow:#FFDA47; --red:#F23A2E; --tan:#C9A86A;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Tajawal',-apple-system,sans-serif;background:var(--cream);color:var(--ink);
+  background-image:url('assets/wave_tan.png');background-size:900px;background-repeat:repeat;
+  background-blend-mode:soft-light;
+  display:flex;flex-direction:column;min-height:100dvh;
+}
+.shell{width:100%;max-width:560px;margin:0 auto;padding:20px 22px 32px;display:flex;flex-direction:column;flex:1}
+
+/* topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 0 0}
+.topbar img.mask{height:38px}
+.topbar img.word{height:26px}
+
+/* progress */
+.progress{display:flex;gap:7px;margin:22px 0 6px}
+.progress span{height:5px;flex:1;background:#e7dfc2;border-radius:99px;transition:.3s}
+.progress span.done{background:var(--ink)}
+.progress span.now{background:var(--red)}
+
+/* steps */
+.step{display:none;flex:1;flex-direction:column;animation:in .35s ease}
+.step.active{display:flex}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.kicker{color:var(--red);font-weight:800;font-size:14px;letter-spacing:.5px;margin-top:26px}
+h1{font-weight:900;font-size:32px;line-height:1.35;margin-top:6px}
+h1 .hl{background:var(--yellow);padding:0 8px;border-radius:8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+p.sub{font-weight:400;font-size:16px;color:#4a4536;margin-top:10px;line-height:1.9}
+
+/* welcome */
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:10px 0}
+.hero img.mask{height:120px;margin:0 auto 18px;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero img.word{height:56px;margin:0 auto}
+.hero .tag{display:inline-block;background:var(--ink);color:var(--cream);font-weight:700;font-size:14px;padding:5px 18px;border-radius:99px;margin:16px auto 6px}
+.hero h1{font-size:30px}
+.hero p{font-size:16.5px;color:#4a4536;margin-top:12px;line-height:2}
+.hero .mins{font-size:13.5px;color:var(--tan);font-weight:700;margin-top:8px}
+
+/* option cards */
+.opts{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.opt{
+  background:var(--cream2);border:2.5px solid var(--ink);border-radius:16px;padding:16px 18px;
+  cursor:pointer;display:flex;align-items:center;gap:14px;transition:.15s;user-select:none;
+  box-shadow:0 3px 0 var(--ink);
+}
+.opt:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.opt .ic{font-size:26px;flex:none;width:44px;height:44px;border-radius:12px;background:var(--yellow);display:flex;align-items:center;justify-content:center}
+.opt .tx b{display:block;font-weight:800;font-size:17.5px}
+.opt .tx small{font-weight:400;font-size:13.5px;color:#6d6650}
+.opt .chk{margin-right:auto;width:26px;height:26px;border:2.5px solid var(--ink);border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:900;color:transparent;background:#fff}
+.opt.sel{background:var(--yellow)}
+.opt.sel .ic{background:var(--cream)}
+.opt.sel .chk{background:var(--ink);color:var(--yellow)}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:11px;margin-top:24px}
+.chip{
+  border:2.5px solid var(--ink);background:var(--cream2);border-radius:99px;padding:11px 20px;
+  font-weight:700;font-size:15.5px;cursor:pointer;transition:.15s;user-select:none;box-shadow:0 3px 0 var(--ink);
+  font-family:inherit;color:var(--ink);
+}
+.chip:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.chip.sel{background:var(--ink);color:var(--yellow)}
+.chip.ghost{border-style:dashed;box-shadow:none;background:transparent}
+
+/* inputs */
+.fields{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.field label{font-weight:800;font-size:14.5px;display:block;margin-bottom:7px}
+.field label small{font-weight:400;color:#8a8266}
+.field input,.field textarea{
+  width:100%;border:2.5px solid var(--ink);border-radius:14px;background:var(--cream2);
+  padding:13px 16px;font-family:inherit;font-size:16px;font-weight:500;color:var(--ink);outline:none;transition:.15s;
+}
+.field input:focus,.field textarea:focus{background:#fff;box-shadow:0 3px 0 var(--ink)}
+.field textarea{resize:none;min-height:88px;line-height:1.8}
+.field input::placeholder,.field textarea::placeholder{color:#b3aa8a;font-weight:400}
+.err{border-color:var(--red)!important}
+
+/* nav */
+.nav{display:flex;gap:12px;margin-top:auto;padding-top:30px}
+.btn{
+  font-family:inherit;border:none;cursor:pointer;border-radius:16px;font-weight:900;font-size:17.5px;
+  padding:16px 22px;transition:.15s;user-select:none;
+}
+.btn-main{flex:1;background:var(--ink);color:var(--cream);box-shadow:0 4px 0 rgba(20,19,16,.35)}
+.btn-main:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(20,19,16,.35)}
+.btn-back{background:transparent;border:2.5px solid var(--ink);color:var(--ink);padding:16px 18px}
+.btn-wa{
+  display:inline-flex;align-items:center;gap:8px;background:transparent;border:none;color:#4a4536;
+  font-weight:700;font-size:14px;margin:18px auto 0;cursor:pointer;text-decoration:underline;text-underline-offset:4px;font-family:inherit;
+}
+
+/* success */
+.done-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.done-wrap img{height:110px;margin:0 auto 20px}
+.done-wrap h1{font-size:34px}
+.done-wrap h1 span{color:var(--red)}
+.done-wrap p{font-size:16.5px;color:#4a4536;margin-top:14px;line-height:2}
+.done-wrap .btn-main{margin-top:28px;text-decoration:none;display:block;text-align:center;flex:0 0 auto}
+
+.spin{display:inline-block;width:20px;height:20px;border:3px solid var(--cream);border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-4px;margin-left:8px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+footer{padding:14px 22px;text-align:center;font-size:12px;color:#a89e7d;font-weight:500}
+@media(min-width:640px){
+  .shell{padding-top:36px}
+  h1{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="topbar" id="topbar" style="visibility:hidden">
+    <img class="mask" src="assets/mask_black.png" alt="">
+    <img class="word" src="assets/wordmark_black.png" alt="فضاء">
+  </div>
+
+  <div class="progress" id="progress" style="visibility:hidden">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- 0 · welcome -->
+  <section class="step active" data-step="0">
+    <div class="hero">
+      <img class="mask" src="assets/mask_black.png" alt="">
+      <img class="word" src="assets/wordmark_black.png" alt="فضاء">
+      <div><span class="tag">للعالم الموازي</span></div>
+      <h1>قبل ما نجتمع،<br>عطنا <span class="hl">الزبدة</span></h1>
+      <p>خمس لمسات وبس — عشان ندخل الاجتماع فاهمينك،<br>وما نضيّع وقتك بأسئلة أساسية.</p>
+      <div class="mins">⏱ أقل من دقيقة</div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-main" onclick="go(1)">يلا نبدأ</button>
+    </div>
+    <a class="btn-wa" id="waEscape" href="#" target="_blank" rel="noopener">تبيها أسهل؟ أرسل لنا صوتية واتساب واشرح براحتك ←</a>
+  </section>
+
+  <!-- 1 · service -->
+  <section class="step" data-step="1">
+    <div class="kicker">١ · نفعتنا</div>
+    <h1>وش نخدمك فيه؟</h1>
+    <p class="sub">اختر وش تحتاج — تقدر تختار أكثر من وحدة.</p>
+    <div class="opts" id="services">
+      <div class="opt" data-v="الإنتاج" onclick="toggleOpt(this)">
+        <div class="ic">🎬</div>
+        <div class="tx"><b>الإنتاج</b><small>تصوير، إخراج، مونتاج — فيديو وصورة بمستوى</small></div>
+        <div class="chk">✓</div>
+      </div>
+      <div class="opt" data-v="التسويق" onclick="toggleOpt(this)">
+        <div class="ic">📣</div>
+        <div class="tx"><b>التسويق</b><small>حملات، إعلانات ممولة، إدارة حسابات</small></div>
+        <div class="chk">✓</div>
+      </div>
+      <div class="opt" data-v="إنشاء المحتوى" onclick="toggleOpt(this)">
+        <div class="ic">✍️</div>
+        <div class="tx"><b>إنشاء المحتوى</b><small>أفكار، سكربتات، محتوى شهري يمشي حالك</small></div>
+        <div class="chk">✓</div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="go(0)">رجوع</button>
+      <button class="btn btn-main" onclick="next(1)">التالي</button>
+    </div>
+  </section>
+
+  <!-- 2 · goal -->
+  <section class="step" data-step="2">
+    <div class="kicker">٢ · الهدف</div>
+    <h1>وش أقرب شي تبي تحققه؟</h1>
+    <p class="sub">اختر الأقرب — وإذا عندك تفاصيل زودنا فيها تحت.</p>
+    <div class="chips" data-single="1" id="goal">
+      <button class="chip" data-v="إطلاق جديد">🚀 إطلاق جديد</button>
+      <button class="chip" data-v="زيادة مبيعات">💰 زيادة مبيعات</button>
+      <button class="chip" data-v="وعي وانتشار">📢 وعي وانتشار</button>
+      <button class="chip" data-v="محتوى شهري ثابت">📅 محتوى شهري ثابت</button>
+      <button class="chip" data-v="تجديد الهوية والحضور">✨ تجديد الحضور</button>
+      <button class="chip ghost" data-v="غيره">شي ثاني…</button>
+    </div>
+    <div class="fields">
+      <div class="field">
+        <label>تفاصيل إضافية <small>— اختياري، اكتب اللي ببالك</small></label>
+        <textarea id="goalNote" placeholder="مثال: عندنا افتتاح فرع جديد بالرياض الشهر الجاي…"></textarea>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="go(1)">رجوع</button>
+      <button class="btn btn-main" onclick="next(2)">التالي</button>
+    </div>
+  </section>
+
+  <!-- 3 · budget -->
+  <section class="step" data-step="3">
+    <div class="kicker">٣ · الميزانية</div>
+    <h1>الميزانية التقريبية؟</h1>
+    <p class="sub">تقريبية وبس — عشان نجهّز لك اقتراح على قدها. وإذا ما حددت، عادي جداً.</p>
+    <div class="chips" data-single="1" id="budget">
+      <button class="chip" data-v="أقل من ١٠ آلاف">أقل من ١٠ آلاف</button>
+      <button class="chip" data-v="١٠ – ٣٠ ألف">١٠ – ٣٠ ألف</button>
+      <button class="chip" data-v="٣٠ – ٨٠ ألف">٣٠ – ٨٠ ألف</button>
+      <button class="chip" data-v="أكثر من ٨٠ ألف">أكثر من ٨٠ ألف</button>
+      <button class="chip ghost" data-v="ما حددت بعد">ما حددت بعد 🤝</button>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="go(2)">رجوع</button>
+      <button class="btn btn-main" onclick="next(3)">التالي</button>
+    </div>
+  </section>
+
+  <!-- 4 · timing -->
+  <section class="step" data-step="4">
+    <div class="kicker">٤ · التوقيت</div>
+    <h1>متى ودّك نبدأ؟</h1>
+    <div class="chips" data-single="1" id="timing">
+      <button class="chip" data-v="بأقرب وقت">🔥 بأقرب وقت</button>
+      <button class="chip" data-v="خلال شهر">خلال شهر</button>
+      <button class="chip" data-v="خلال ٣ أشهر">خلال ٣ أشهر</button>
+      <button class="chip ghost" data-v="أستكشف الحين">أستكشف الحين</button>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="go(3)">رجوع</button>
+      <button class="btn btn-main" onclick="next(4)">التالي</button>
+    </div>
+  </section>
+
+  <!-- 5 · contact -->
+  <section class="step" data-step="5">
+    <div class="kicker">٥ · عرّفنا عليك</div>
+    <h1>آخر خطوة ✌️</h1>
+    <div class="fields">
+      <div class="field">
+        <label>اسمك</label>
+        <input id="cName" type="text" placeholder="مثال: أبو فهد" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>جهتك / مشروعك</label>
+        <input id="cBrand" type="text" placeholder="اسم البراند أو الشركة">
+      </div>
+      <div class="field">
+        <label>رقم واتساب <small>— عشان نرجع لك عليه</small></label>
+        <input id="cPhone" type="tel" inputmode="tel" placeholder="05xxxxxxxx" autocomplete="tel" dir="rtl" style="text-align:right">
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="go(4)">رجوع</button>
+      <button class="btn btn-main" id="sendBtn" onclick="submitForm()">أرسل ✦</button>
+    </div>
+  </section>
+
+  <!-- 6 · done -->
+  <section class="step" data-step="6">
+    <div class="done-wrap">
+      <img src="assets/mask_yellow.png" alt="">
+      <h1>وصلنا. <span>نوردك الماء</span> 💛</h1>
+      <p>الفريق الحين شاف طلبك، وبندخل اجتماعنا<br>فاهمين وش تبي بالضبط — بدون لف ودوران.</p>
+      <a class="btn btn-main" id="waDone" href="#" target="_blank" rel="noopener">كلمنا واتساب إذا بغيت شي ثاني</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>Fada Solutions — للعالم الموازي · صناعة الأثر</footer>
+
+<script type="module">
+/* طبقة الحفظ — منفصلة عن منطق الواجهة عشان الأزرار تشتغل حتى لو تأخر التحميل */
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const fb = initializeApp({
+  apiKey: "AIzaSyB6Wczw1P_HRH0duTe6mhp1AxheQ8_Necw",
+  authDomain: "ahdaf-influencers.firebaseapp.com",
+  projectId: "ahdaf-influencers",
+  appId: "1:901322987426:web:13e998ecbabcfa3c0244fb"
+});
+const db = getFirestore(fb);
+window.__fadaSave = (data) => addDoc(collection(db, 'fada_leads'), data);
+</script>
+
+<script>
+const WHATSAPP = "966544198010";
+
+const waText = encodeURIComponent("مرحبا فضاء 👋 أبي أشرح لكم طلبي صوتية");
+document.getElementById('waEscape').href = `https://wa.me/${WHATSAPP}?text=${waText}`;
+document.getElementById('waDone').href = `https://wa.me/${WHATSAPP}`;
+
+let cur = 0;
+const TOTAL = 5; // steps 1..5
+
+function go(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  cur = n;
+  const bar = document.getElementById('progress'), top = document.getElementById('topbar');
+  const inFlow = n>=1 && n<=5;
+  bar.style.setProperty('visibility', inFlow ? 'visible':'hidden');
+  bar.style.display = inFlow ? 'flex':'none';
+  top.style.setProperty('visibility', inFlow ? 'visible':'hidden');
+  if(inFlow){
+    bar.querySelectorAll('span').forEach((s,i)=>{
+      s.className = i < n-1 ? 'done' : (i === n-1 ? 'now' : '');
+    });
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleOpt(el){ el.classList.toggle('sel'); }
+
+document.querySelectorAll('.chips').forEach(g=>{
+  g.querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      if(g.dataset.single){ g.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel')); }
+      c.classList.add('sel');
+    });
+  });
+});
+
+function shake(el){ el.classList.add('err'); setTimeout(()=>el.classList.remove('err'),1600); }
+
+function next(from){
+  if(from===1){
+    if(!document.querySelectorAll('#services .opt.sel').length){
+      document.querySelectorAll('#services .opt').forEach(shake); return;
+    }
+  }
+  go(from+1);
+}
+
+function collect(){
+  const pick = id => (document.querySelector(`#${id} .sel`)?.dataset.v) || "";
+  return {
+    services: [...document.querySelectorAll('#services .opt.sel')].map(o=>o.dataset.v),
+    goal: pick('goal'),
+    goalNote: document.getElementById('goalNote').value.trim(),
+    budget: pick('budget') || "ما حددت بعد",
+    timing: pick('timing') || "",
+    name: document.getElementById('cName').value.trim(),
+    brand: document.getElementById('cBrand').value.trim(),
+    phone: document.getElementById('cPhone').value.trim().replace(/[\s-]/g,''),
+    page: location.href.slice(0,300),
+    status: "new",
+    brief: null,
+    ts: Date.now()
+  };
+}
+
+async function waitSave(ms=8000){
+  const t0 = Date.now();
+  while(!window.__fadaSave){
+    if(Date.now()-t0 > ms) throw new Error('sdk not loaded');
+    await new Promise(r=>setTimeout(r,150));
+  }
+  return window.__fadaSave;
+}
+
+async function submitForm(){
+  const nameEl=document.getElementById('cName'), phoneEl=document.getElementById('cPhone');
+  let ok = true;
+  if(!nameEl.value.trim()){ shake(nameEl); ok=false; }
+  if(!/^\+?\d{9,15}$/.test(phoneEl.value.replace(/[\s-]/g,''))){ shake(phoneEl); ok=false; }
+  if(!ok) return;
+
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true; btn.innerHTML='ثواني…<span class="spin"></span>';
+
+  try{
+    const save = await waitSave();
+    await save(collect());
+    go(6);
+  }catch(e){
+    console.error(e);
+    btn.disabled=false; btn.textContent='أرسل ✦';
+    alert('صار خلل بسيط بالإرسال 😅 جرّب مرة ثانية، أو كلمنا واتساب مباشرة.');
+  }
+}
+</script>
+</body>
+</html>

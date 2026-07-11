@@ -1,0 +1,34 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // بوابة فضاء: العميل يقدر ينشئ طلب فقط — لا قراءة ولا تعديل ولا حذف
+    match /fada_leads/{leadId} {
+      allow create: if
+        request.resource.data.keys().hasOnly(
+          ['services','goal','goalNote','budget','timing','name','brand','phone','page','status','brief','ts']
+        )
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() >= 9
+        && request.resource.data.phone.size() <= 30
+        && request.resource.data.services is list
+        && request.resource.data.services.size() >= 1
+        && request.resource.data.services.size() <= 5
+        && request.resource.data.goalNote.size() <= 2000
+        && request.resource.data.status == 'new'
+        && request.resource.data.brief == null;
+      allow read, update, delete: if false;
+    }
+
+    // كل شي ثاني مقفول من جهة العملاء
+    // (ملاحظة: القواعد التجريبية القديمة انتهت 2026-07-04 وكان كل شي مرفوض أصلاً.
+    //  إذا تطبيق أهداف يحتاج وصول client، نضيف له قواعد بمصادقة لاحقاً.)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
